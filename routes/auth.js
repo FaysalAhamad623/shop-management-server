@@ -111,3 +111,26 @@ router.post('/login', async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     });
 
+    res.json({
+      success: true,
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar
+      },
+      token
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+// @route   POST /api/auth/logout
+// @desc    Logout user / clear cookie
+// @access  Private
+
