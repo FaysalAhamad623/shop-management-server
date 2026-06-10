@@ -96,4 +96,26 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @route   POST /api/products
+// @desc    Create a new product
+// @access  Private/Admin
+router.post('/', protect, async (req, res) => {
+  try {
+    // Add user to req.body
+    req.body.createdBy = req.user.id;
+
+    const product = await Product.create(req.body);
+
+    res.status(201).json({
+      success: true,
+      data: product
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
 
