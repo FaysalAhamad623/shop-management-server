@@ -134,3 +134,35 @@ router.post('/login', async (req, res) => {
 // @desc    Logout user / clear cookie
 // @access  Private
 
+router.post('/logout', protect, (req, res) => {
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(0)
+  });
+
+  res.json({
+    success: true,
+    message: 'Logged out successfully'
+  });
+});
+
+// @route   GET /api/auth/me
+// @desc    Get current logged in user
+// @access  Private
+router.get('/me', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    res.json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+module.exports = router;
