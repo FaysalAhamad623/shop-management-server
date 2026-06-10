@@ -34,4 +34,38 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-
+  image: {
+    type: String,
+    required: [true, 'Please add an image URL']
+  },
+  images: [{
+    type: String
+  }],
+  sizes: [{
+    type: String,
+    enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34', '36', '38', '40', '42', '44', '46', '6', '7', '8', '9', '10', '11', '12', '13', 'One Size']
+  }],
+  colors: [{
+    type: String
+  }],
+  stock: {
+    type: Number,
+    required: [true, 'Please add stock quantity'],
+    min: [0, 'Stock cannot be negative'],
+    default: 0
+  },
+  rating: {
+    type: Number,
+    min: [0, 'Rating must be at least 0'],
+    max: [5, 'Rating cannot be more than 5'],
+    default: 0
+  },
+  numReviews: {
+    type: Number,
+    default: 0
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+ 
