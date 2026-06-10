@@ -68,4 +68,30 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
- 
+  isNewArrival: {
+    type: Boolean,
+    default: false
+  },
+  discount: {
+    type: Number,
+    min: [0, 'Discount cannot be negative'],
+    max: [100, 'Discount cannot be more than 100%'],
+    default: 0
+  },
+  tags: [{
+    type: String
+  }],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Create index for search
+productSchema.index({ name: 'text', description: 'text', brand: 'text' });
+
+module.exports = mongoose.model('Product', productSchema);
