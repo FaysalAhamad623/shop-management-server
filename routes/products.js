@@ -39,4 +39,61 @@ router.get('/', async (req, res) => {
       query.isNewArrival = true;
     }
 
-  
+    // Execute query
+    let products = Product.find(query);
+
+    // Sort
+    if (sort === 'price-asc') {
+      products = products.sort({ price: 1 });
+    } else if (sort === 'price-desc') {
+      products = products.sort({ price: -1 });
+    } else if (sort === 'name') {
+      products = products.sort({ name: 1 });
+    } else if (sort === 'rating') {
+      products = products.sort({ rating: -1 });
+    } else {
+      products = products.sort({ createdAt: -1 });
+    }
+
+    const result = await products;
+
+    res.json({
+      success: true,
+      count: result.length,
+      data: result
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+// @route   GET /api/products/:id
+// @desc    Get single product
+// @access  Public
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: product
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+
